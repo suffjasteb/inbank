@@ -9,10 +9,7 @@ use App\Models\User;
 class TransactionController extends Controller
 {
     //
-    public function index() {
-        $balance = $this->getBalance();
-        return view('home', compact('balance'));
-    }
+
 
     public function deposit() {
         return view('topup');
@@ -64,18 +61,20 @@ class TransactionController extends Controller
         return redirect()->route('home')->with('success', 'Withdraw successful!');
     }
 
+
     public function history() {
-        $transactions  = auth()->user()->transactions()->with('toUser')->get();
+
+        $user = auth()->user();
+
+        $outgoing = $user->transferSent()->with('toUser')->get();
+        $incoming = $user->transferReceived()->with('fromUser')->get();
+
+        $transactions = $outgoing->merge($incoming);
+
+        $transactions = $transactions->sortByDesc('created_at'); // Urutkan berdasarkan tanggal terbaru
+
         return view('history', compact('transactions'));
     }
 
-    public function getBalance() {
-        $user = auth()->user(); // Ambil User yang sedang login
-        if ($user) {
-            return $user->balance;
-        } else {
-            return 0; // Jika user tidak ditemukan, kembalikan saldo 0
-        }
-    }
 }
 
