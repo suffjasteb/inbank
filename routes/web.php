@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransferController;
+use App\Http\Controllers\Controller;
 
 Route::get('/', function () {
     return view('welcome');
