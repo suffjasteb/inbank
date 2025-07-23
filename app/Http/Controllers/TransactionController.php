@@ -20,18 +20,18 @@ class TransactionController extends Controller
             'amount' => 'required|numeric|min:10000',
         ]);
         $amount = $request->input('amount');
-        $user = auth()->user(); // Ambil User yang sedang login
+        $user = auth()->user();
 
-        $user->balance += $amount; //default nya udah 0
+        $user->balance += $amount; 
         $user->save();
 
         Transaction::create([
             'user_id' => $user->id,
-            'type' => 'deposit',
+            'type' => 'topup',
             'amount' => $amount,
-            'to_user_id' => null, // karena ini deposit, tidak ada user tujuan
+            'to_user_id' => null, 
         ])->save();
-        return redirect()->route('home')->with('success', 'Topup successful!');
+        return redirect()->route('dashboard')->with('success', 'Topup successful!');
     }
 
     public function withdraw() {
