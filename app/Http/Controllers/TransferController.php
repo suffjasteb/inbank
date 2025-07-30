@@ -10,7 +10,7 @@ class TransferController extends Controller
 {
     //
     public function transfer() {
-        return view('user.transfer');
+        return view('transfer');
     }
 
     public function saveTransfer(Request $request) {
@@ -24,7 +24,7 @@ class TransferController extends Controller
 
         // cari penerima berdasarkan email atau username
         $recipient = User::where('email', $request->recipient)
-            ->orWhere('username', $request->recipient)
+            ->orWhere('name', $request->recipient)
             ->first();
 
             if (!$recipient) {
